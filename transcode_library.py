@@ -215,7 +215,7 @@ def transcode_library_complete(root_dir, timeout_mins):
                         get_file_size_gb(file_path),
                     )
                 )
-                logfile.flus()
+                logfile.flush()
 
                 new_file_path = transcode_single(file_path, root_dir)
                 logfile.write(
