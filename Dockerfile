@@ -1,6 +1,6 @@
 FROM jlesage/handbrake:latest
 
-RUN apk add --no-cache --update python3
+RUN apk add --no-cache --update python3 libmediainfo
 
 RUN pip3 install --upgrade pip
 
