@@ -128,8 +128,8 @@ def transcode_single(file_path, root_dir):
         ]
     )
 
-    transcode_log = open(os.path.splitext(new_file_path)[0] + ".transcodelog", "w")
-    result = subprocess.run(command, stderr=transcode_log)
+    # transcode_log = open(os.path.splitext(new_file_path)[0] + ".transcodelog", "w")
+    result = subprocess.run(command)
     result.check_returncode()
 
     os.remove(file_path)
@@ -230,6 +230,7 @@ def transcode_library_complete(root_dir, timeout_mins):
                         get_file_size_gb(file_path),
                     )
                 )
+                logfile.flus()
 
                 new_file_path = transcode_single(file_path, root_dir)
                 logfile.write(
@@ -241,6 +242,7 @@ def transcode_library_complete(root_dir, timeout_mins):
                         get_file_size_gb(new_file_path),
                     )
                 )
+                logfile.flush()
 
                 if item_type == "movies":
                     update_movie_radarr(
