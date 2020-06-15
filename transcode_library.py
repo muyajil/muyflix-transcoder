@@ -64,20 +64,6 @@ def is_transcoded(file_path):
     ) and os.path.isfile(get_tag_file_path(file_path, "mp4"))
 
 
-def is_transcoding(file_path):
-    transcodelog_path = get_tag_file_path(file_path, "transcodelog")
-    if os.path.isfile(transcodelog_path):
-        last_change = os.path.getmtime(transcodelog_path)
-        if (
-            time.time() - last_change > 36000
-        ):  # Check if file was modified in last 10 hours > detect program crashes
-            return False
-        else:
-            return True
-    else:
-        return False
-
-
 def get_relevant_file_paths(root_dir):
     file_paths = get_absolute_paths(root_dir)
     file_paths = filter(lambda f: "/movies/" in f or "/tv/" in f, file_paths)
@@ -217,7 +203,6 @@ def transcode_library_complete(root_dir, timeout_mins):
         try:
             if (
                 not is_info_file(file_path)
-                and not is_transcoding(file_path)
                 and not is_transcoded(file_path)
                 and is_video(file_path)
             ):
