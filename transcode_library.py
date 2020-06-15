@@ -269,7 +269,7 @@ if __name__ == "__main__":
     while True:
         transcoded_files = transcode_library_complete(
             os.environ.get('ROOT_DIR'),
-            os.environ.get('TIMEOUT_MINS')
+            int(os.environ.get('TIMEOUT_MINS'))
         )
         if transcoded_files == 0:
             time.sleep(5 * 3600)
