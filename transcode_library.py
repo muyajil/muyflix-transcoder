@@ -217,6 +217,7 @@ def transcode_library_complete(root_dir, timeout_mins):
                 )
                 logfile.flush()
 
+                print("--------------------------------------------------------------------------", flush=True)
                 print(
                     "Started Transcoding!\n\tCurrent Time: {}\n\tFile: {}".format(
                         datetime.now().isoformat(" ", "seconds"),
@@ -246,11 +247,12 @@ def transcode_library_complete(root_dir, timeout_mins):
                 print(
                     "Finished Transcoding!\n\tCurrent Time: {}\n\tFile: {}\n\tTranscoding Time: {}".format(
                         datetime.now().isoformat(" ", "seconds"),
-                        item_name,
+                        os.path.basename(new_file_path),
                         elapsed_time,
                     ),
                     flush=True
                 )
+                print("--------------------------------------------------------------------------", flush=True)
 
                 time.sleep(timeout_mins * 60)
                 transcoded_files += 1
