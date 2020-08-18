@@ -115,7 +115,7 @@ def transcode_single(file_path, root_dir):
     )
 
     # transcode_log = open(os.path.splitext(new_file_path)[0] + ".transcodelog", "w")
-    result = subprocess.run(command)
+    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result.check_returncode()
 
     os.remove(file_path)
@@ -217,6 +217,13 @@ def transcode_library_complete(root_dir, timeout_mins):
                 )
                 logfile.flush()
 
+                print(
+                    "Started Transcoding!\n\tCurrent Time: {}\n\tFile: {}".format(
+                        datetime.now().isoformat(" ", "seconds"),
+                        item_name,
+                    )
+                )
+
                 new_file_path = transcode_single(file_path, root_dir)
                 logfile.write(
                     '{},end,{},"{}","{}",{:.2f}\n'.format(
@@ -236,7 +243,7 @@ def transcode_library_complete(root_dir, timeout_mins):
 
                 elapsed_time = datetime.now() - transcode_start
                 print(
-                    "Finished Transcoding!\n\tCurrent Time: {}\n\tFile: {}\n\tTranscoding Time: {}\n\tTaking a break...".format(
+                    "Finished Transcoding!\n\tCurrent Time: {}\n\tFile: {}\n\tTranscoding Time: {}".format(
                         datetime.now().isoformat(" ", "seconds"),
                         item_name,
                         elapsed_time,
@@ -259,4 +266,5 @@ if __name__ == "__main__":
             int(os.environ.get('TIMEOUT_MINS'))
         )
         if transcoded_files == 0:
+            print('No files were transcoded, waiting for new files...')
             time.sleep(5 * 3600)
