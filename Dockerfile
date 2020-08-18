@@ -8,4 +8,4 @@ RUN pip3 install pymediainfo requests retry
 
 COPY transcode_library.py /transcode_library.py
 
-ENTRYPOINT [ "python3", "/transcode_library.py" ]
+CMD [ "python3", "/transcode_library.py" ]
