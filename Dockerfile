@@ -2,8 +2,6 @@ FROM jlesage/handbrake:latest
 
 RUN apk add --no-cache --update python3 libmediainfo
 
-ENV PYTHONUNBUFFERED=0
-
 RUN pip3 install --upgrade pip
 
 RUN pip3 install pymediainfo requests retry

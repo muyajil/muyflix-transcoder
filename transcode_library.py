@@ -221,7 +221,8 @@ def transcode_library_complete(root_dir, timeout_mins):
                     "Started Transcoding!\n\tCurrent Time: {}\n\tFile: {}".format(
                         datetime.now().isoformat(" ", "seconds"),
                         item_name,
-                    )
+                    ),
+                    flush=True
                 )
 
                 new_file_path = transcode_single(file_path, root_dir)
@@ -247,7 +248,8 @@ def transcode_library_complete(root_dir, timeout_mins):
                         datetime.now().isoformat(" ", "seconds"),
                         item_name,
                         elapsed_time,
-                    )
+                    ),
+                    flush=True
                 )
 
                 time.sleep(timeout_mins * 60)
@@ -260,11 +262,12 @@ def transcode_library_complete(root_dir, timeout_mins):
 
 
 if __name__ == "__main__":
+    print('Starting transcoding process...', flush=True)
     while True:
         transcoded_files = transcode_library_complete(
             os.environ.get('ROOT_DIR'),
             int(os.environ.get('TIMEOUT_MINS'))
         )
         if transcoded_files == 0:
-            print('No files were transcoded, waiting for new files...')
+            print('No files were transcoded, waiting for new files...', flush=True)
             time.sleep(5 * 3600)
