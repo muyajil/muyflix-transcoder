@@ -50,9 +50,10 @@ def get_quality_tag(file_path):
 
 
 def get_tag_file_path(file_path, ending):
-    if "WEB-DL-" in file_path:
+    quality_tag = get_quality_tag(file_path)
+    if quality_tag in file_path:
         return os.path.splitext(file_path)[0] + "." + ending
-    return os.path.splitext(file_path)[0] + get_quality_tag(file_path) + "." + ending
+    return os.path.splitext(file_path)[0] + quality_tag + "." + ending
 
 
 def is_transcoded(file_path):
