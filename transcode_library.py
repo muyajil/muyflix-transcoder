@@ -36,7 +36,7 @@ def is_full_hd(file_path):
     fileInfo = MediaInfo.parse(file_path)
     for track in fileInfo.tracks:
         if track.track_type == "Video":
-            if track.width > 1900:
+            if track.height > 1050:
                 return True
     return False
 
@@ -45,7 +45,7 @@ def get_quality_tag(file_path):
     fileInfo = MediaInfo.parse(file_path)
     for track in fileInfo.tracks:
         if track.track_type == "Video":
-            if track.width > 1900:
+            if track.height > 1050:
                 return " - WEB-DL-1080p"
             else:
                 return " - WEB-DL-720p"
