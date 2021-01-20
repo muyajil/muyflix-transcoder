@@ -32,23 +32,20 @@ def is_info_file(file_path):
     return file_path.endswith(("jpg", "nfo", "transcodelog", "istranscoded"))
 
 
-def is_full_hd(file_path):
-    fileInfo = MediaInfo.parse(file_path)
-    for track in fileInfo.tracks:
-        if track.track_type == "Video":
-            if track.height > 1050:
-                return True
-    return False
-
-
 def get_quality_tag(file_path):
     fileInfo = MediaInfo.parse(file_path)
     for track in fileInfo.tracks:
         if track.track_type == "Video":
-            if track.height > 1050:
-                return " - WEB-DL-1080p"
-            else:
+            if track.height <= 360:
+                return " - DVD"
+            elif 360 < track.height <= 460:
+                return " - SDTV"
+            elif 460 < track.height <= 480:
+                return " - WEB-DL-480p"
+            elif 480 < track.height <= 720:
                 return " - WEB-DL-720p"
+            else:
+                return " - WEB-DL-1080p"
     return ""
 
 
