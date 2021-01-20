@@ -83,7 +83,7 @@ def get_properties(file_path):
 
 @retry(subprocess.CalledProcessError, delay=60)
 def transcode_single(file_path, root_dir):
-    new_file_path = os.path.splitext(file_path)[0] + get_quality_tag(file_path) + ".mp4"
+    new_file_path = get_tag_file_path(file_path, "mp4")
     new_file_path = new_file_path.replace("tmp", root_dir)
 
     temp_file_name = os.path.basename(new_file_path)
