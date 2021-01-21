@@ -112,7 +112,6 @@ def transcode_single(file_path, root_dir):
         ]
     )
 
-    # transcode_log = open(os.path.splitext(new_file_path)[0] + ".transcodelog", "w")
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result.check_returncode()
 
@@ -185,12 +184,6 @@ def update_movie_radarr(old_file_name, new_file_name):
 
 def transcode_library_complete(root_dir, timeout_mins):
     transcoded_files = 0
-    log_path = os.environ.get('LOG_FILE_PATH')
-    if os.path.isfile(log_path):
-        logfile = logfile = open(log_path, 'a')
-    else:
-        logfile = logfile = open(log_path, 'w')
-        logfile.write('Time,Event,Type,Name,File,Size (GB)\n')
 
     file_paths = get_relevant_file_paths(root_dir)
 
@@ -204,16 +197,6 @@ def transcode_library_complete(root_dir, timeout_mins):
                 and not is_transcoded(file_path)
                 and is_video(file_path)
             ):
-                logfile.write(
-                    '{},start,{},"{}","{}",{:.2f}\n'.format(
-                        datetime.now().isoformat(" ", "seconds"),
-                        item_type,
-                        folder_name,
-                        item_name,
-                        get_file_size_gb(file_path),
-                    )
-                )
-                logfile.flush()
 
                 print("--------------------------------------------------------------------------", flush=True)
                 print(
@@ -226,16 +209,6 @@ def transcode_library_complete(root_dir, timeout_mins):
                 )
 
                 new_file_path = transcode_single(file_path, root_dir)
-                logfile.write(
-                    '{},end,{},"{}","{}",{:.2f}\n'.format(
-                        datetime.now().isoformat(" ", "seconds"),
-                        item_type,
-                        folder_name,
-                        new_file_path.split("/")[-1],
-                        get_file_size_gb(new_file_path),
-                    )
-                )
-                logfile.flush()
 
                 if item_type == "movies":
                     update_movie_radarr(
@@ -259,7 +232,6 @@ def transcode_library_complete(root_dir, timeout_mins):
         except FileNotFoundError:
             continue
 
-    logfile.close()
     return transcoded_files
 
 
