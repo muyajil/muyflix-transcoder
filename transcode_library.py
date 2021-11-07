@@ -98,7 +98,7 @@ def transcode_single(file_path, root_dir):
             "-e",
             "x264",
             "-q",
-            "25",
+            "23",
             "--audio-lang-list",
             "eng,ger,und",
             "--vfr",
