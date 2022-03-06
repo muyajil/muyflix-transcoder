@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from socket import timeout
 import subprocess
 import shutil
 from pymediainfo import MediaInfo
@@ -145,7 +146,7 @@ def get_movie_filename(movie_id):
             os.environ.get("RADARR_API_KEY"),
         )
     )
-    movie = json.loads(response.text)
+    movie = response.json()
     if "movieFile" in movie:
         return movie["movieFile"]["relativePath"]
     else:
@@ -156,10 +157,10 @@ def update_movie_radarr(old_file_name, new_file_name):
     response = requests.get(
         "{}/movie?apikey={}".format(
             os.environ.get("RADARR_API_ROOT"), os.environ.get("RADARR_API_KEY")
-        )
+        , timeout=180)
     )
 
-    for movie in json.loads(response.text):
+    for movie in response.json():
         if movie["downloaded"]:
             if movie["movieFile"]["relativePath"] == old_file_name:
                 tries = 0
@@ -174,7 +175,7 @@ def update_movie_radarr(old_file_name, new_file_name):
                         headers={"Content-Type": "application/json"},
                     )
 
-                    command = json.loads(response.text)
+                    command = response.json()
 
                     while not is_command_completed(command["id"]):
                         time.sleep(10)
