@@ -161,7 +161,7 @@ def update_movie_radarr(old_file_name, new_file_name):
     )
 
     for movie in response.json():
-        if movie["downloaded"]:
+        if movie["hasFile"]:
             if movie["movieFile"]["relativePath"] == old_file_name:
                 tries = 0
                 while get_movie_filename(movie["id"]) != new_file_name and tries < 5:
