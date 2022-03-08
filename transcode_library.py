@@ -126,18 +126,6 @@ def transcode_single(file_path, root_dir):
     return new_file_path
 
 
-def is_command_completed(command_id):
-    response = requests.get(
-        "{}/command/{}?apikey={}".format(
-            os.environ.get("RADARR_API_ROOT"),
-            command_id,
-            os.environ.get("RADARR_API_KEY"),
-        )
-    )
-    command = json.loads(response.text)
-    return command["state"] == "completed"
-
-
 def get_movie_filename(movie_id):
     response = requests.get(
         "{}/movie/{}?apikey={}".format(
@@ -166,7 +154,7 @@ def update_movie_radarr(old_file_name, new_file_name):
                 tries = 0
                 while get_movie_filename(movie["id"]) != new_file_name and tries < 5:
                     data = {"name": "RefreshMovie", "movieId": movie["id"]}
-                    response = requests.post(
+                    _ = requests.post(
                         "{}/command?apikey={}".format(
                             os.environ.get("RADARR_API_ROOT"),
                             os.environ.get("RADARR_API_KEY"),
@@ -174,11 +162,7 @@ def update_movie_radarr(old_file_name, new_file_name):
                         data=json.dumps(data),
                         headers={"Content-Type": "application/json"},
                     )
-
-                    command = response.json()
-
-                    while not is_command_completed(command["id"]):
-                        time.sleep(10)
+                    time.sleep(10)
                     tries += 1
                 return
 
