@@ -153,7 +153,7 @@ def update_movie_radarr(old_file_name, new_file_name):
             if movie["movieFile"]["relativePath"] == old_file_name:
                 tries = 0
                 while get_movie_filename(movie["id"]) != new_file_name and tries < 5:
-                    data = {"name": "RefreshMovie", "movieId": movie["id"]}
+                    data = {"name": "RefreshMovie", "movieIds": [movie["id"]]}
                     _ = requests.post(
                         "{}/command?apikey={}".format(
                             os.environ.get("RADARR_API_ROOT"),
