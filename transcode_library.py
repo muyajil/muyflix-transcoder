@@ -45,8 +45,10 @@ def get_quality_tag(file_path):
                 return " - WEB-DL-480p"
             elif 480 < track.height <= 720:
                 return " - WEB-DL-720p"
-            else:
+            elif 720 < track.height <= 1080:
                 return " - WEB-DL-1080p"
+            else:
+                return " - WEB-DL-2160p"
     return ""
 
 
@@ -89,6 +91,11 @@ def transcode_single(file_path, root_dir):
 
     temp_file_name = os.path.basename(new_file_path)
 
+    if "movies" in new_file_path:
+        width, height = "3840", "2160"
+    else:
+        width, height = "1920", "1080"
+
     command = ["HandBrakeCLI"]
     command.extend(["-i", file_path])
     command.extend(["-o", "/tmp/{}".format(temp_file_name)])
@@ -106,9 +113,9 @@ def transcode_single(file_path, root_dir):
             "-E",
             "copy:ac3,copy:aac,copy:dts,copy:dtshd",
             "-Y",
-            "1080",
+            height,
             "-X",
-            "1920",
+            width,
             "--optimize",
         ]
     )
